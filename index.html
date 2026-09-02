@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>i4x.me</title>
+
+    <link
+      rel="stylesheet"
+      media="screen"
+      href="https://fontlibrary.org/face/linux-libertine"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="/US8468SRE.png" sizes="96x96" />
+  </head>
+
+  <body>
+    <div class="page">
+      <main class="ds-main">
+        <div class="ds-headerbar">
+          <div class="ds-header-left">
+            <img src="1JYLPHL0M.png" class="ds-logo" alt="Website logo" />
+          </div>
+
+          <div class="ds-header-right">v1.0</div>
+
+          <div class="ds-header-shine" aria-hidden="true"></div>
+        </div>
+
+        <div class="ds-content">
+          <section class="ds-panel">
+            <img src="/ETJVAHDUC.png" height="25%" width="25%">
+            <hr style="display: none;"/>
+            <p class="ds-p">
+              welcome to masterdojo's abode
+            </p>
+
+            <div class="ds-actions">
+              <a class="ds-btn primary" href="https://steamcommunity.com/id/yyzerdd" target="_blank">Steam</a>
+              <a class="ds-btn" href="/recipes">Recipes</a>
+              <a class="ds-btn" href="/contact">Contact</a>
+            </div>
+
+            <hr class="ds-hr" />
+
+            <section id="about" class="ds-section">
+              <h2 class="ds-h2">Placeholder</h2>
+              <p class="ds-p dim">Placeholder</p>
+            </section>
+
+            <section id="daemons" class="ds-section">
+  <h2 class="ds-h2">Daemons</h2>
+  <ul class="ds-list">
+    <li>
+      <a href="https://tv.i4x.me" target="_blank" class="ds-icon-link">
+        <img src="/A9X1TVTAY.png" class="ds-link-icon" alt="Jellyfin Icon" />
+        <span>Jellyfin</span>
+      </a> — Free open-source media streaming server.
+    </li>
+    <li>
+      <a href="https://cloud.i4x.me" target="_blank" class="ds-icon-link">
+        <img src="/0S7W0A18E.png" class="ds-link-icon" alt="Nextcloud Icon" />
+        <span>Nextcloud</span>
+      </a> — Self-hosted open-source cloud storage.
+    </li>
+  </ul>
+</section>
+
+            <section id="contact" class="ds-section">
+              <h2 class="ds-h2">Contact</h2>
+              <p class="ds-p">
+                Email: <a class="ds-link" href="mailto:yyz@i4x.me">yyz@i4x.me</a>
+              </p>
+            </section>
+          </section>
+
+          <section class="ds-panel comments-panel">
+            <div class="ds-comments-header">
+              <a href="https://steamcommunity.com/id/yyzerdd" target="_blank" rel="noopener noreferrer" class="ds-steam-link" style="display: inline-flex; align-items: center; gap: 5px;">
+                <img src="/YZSMZH2PZ.png" width="14" height="14" viewBox="0 0 24 24" style="flex-shrink:0;"/>
+                <span>Leave a comment on Steam</span>
+              </a>
+              <span id="total-comments-count" class="comments-count"></span>
+            </div>
+
+            <hr class="ds-hr" />
+
+            <div id="comments-list" class="comments-viewport">Loading...</div>
+
+            <div class="comment-pagination">
+              <button id="prev-btn" class="ds-btn" onclick="changePage(-1)">◄ Prev</button>
+              <span id="page-indicator" class="ds-p dim">Page 1</span>
+              <button id="next-btn" class="ds-btn" onclick="changePage(1)">Next ►</button>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const header = document.querySelector('.ds-headerbar');
+      const shine = document.querySelector('.ds-header-shine');
+
+      if (header && shine) {
+        header.addEventListener('mouseenter', () => {
+          shine.classList.remove('is-animating');
+          void shine.offsetWidth; 
+          shine.classList.add('is-animating');
+        });
+
+        shine.addEventListener('animationend', () => {
+          shine.classList.remove('is-animating');
+        });
+      }
+    </script>
+
+    <script>
+      let allCommentsData = [];
+      let currentPage = 1;
+      const COMMENTS_PER_PAGE = 3;
+
+      function sanitizeText(rawHtml) {
+        const temp = document.createElement('div');
+        temp.innerHTML = rawHtml;
+        return temp.textContent || temp.innerText || '';
+      }
+
+      async function initComments() {
+        const listEl = document.getElementById('comments-list');
+        try {
+          const response = await fetch('./comments.json');
+          const data = await response.json();
+          
+          allCommentsData = data.comments || [];
+          document.getElementById('total-comments-count').textContent = `${data.totalComments || 0} total`;
+
+          renderPage(1);
+        } catch (err) {
+          listEl.innerHTML = '<p class="ds-p dim">Unable to load comments.json</p>';
+        }
+      }
+
+      function renderPage(page) {
+        const listEl = document.getElementById('comments-list');
+        listEl.innerHTML = '';
+
+        const totalPages = Math.ceil(allCommentsData.length / COMMENTS_PER_PAGE) || 1;
+        currentPage = Math.max(1, Math.min(page, totalPages));
+
+        const start = (currentPage - 1) * COMMENTS_PER_PAGE;
+        const pageComments = allCommentsData.slice(start, start + COMMENTS_PER_PAGE);
+
+        if (pageComments.length === 0) {
+          listEl.innerHTML = '<p class="ds-p dim">No comments found.</p>';
+          return;
+        }
+
+        pageComments.forEach(c => {
+          const cleanText = sanitizeText(c.text);
+          const item = document.createElement('div');
+          item.className = 'comment-item';
+          item.innerHTML = `
+            <div class="comment-avatar">
+              <a href="${c.profileUrl}" class="comment-avatar-link" target="_blank" rel="noopener noreferrer">
+                <img src="${c.avatar}" alt="${c.author}" />
+              </a>
+            </div>
+            <div class="comment-content">
+              <div class="comment-header">
+                <a href="${c.profileUrl}" target="_blank" rel="noopener noreferrer" class="comment-author">${c.author}</a>
+                <span class="comment-date">${c.date}</span>
+              </div>
+              <div class="comment-text">${cleanText}</div>
+            </div>
+          `;
+          listEl.appendChild(item);
+        });
+
+        document.getElementById('page-indicator').textContent = `Page ${currentPage} of ${totalPages}`;
+        document.getElementById('prev-btn').disabled = currentPage <= 1;
+        document.getElementById('next-btn').disabled = currentPage >= totalPages;
+      }
+
+      function changePage(delta) {
+        renderPage(currentPage + delta);
+      }
+
+      initComments();
+    </script>
+  </body>
+</html>
