@@ -1,0 +1,591 @@
+/* ==========================
+   THEME
+   ========================== */
+:root{
+  --bg: #d6d6d6;
+  --grid-dark: rgba(0,0,0,0.07);
+  --grid-light: rgba(255,255,255,0.35);
+
+  --ink: rgba(20, 25, 35, 0.92);
+  --muted: rgba(20, 25, 35, 0.65);
+
+  --border: rgba(0,0,0,0.30);
+  --border-soft: rgba(0,0,0,0.18);
+
+  --shadow: rgba(0,0,0,0.18);
+
+  --panelA: rgba(255,255,255,0.78);
+  --panelB: rgba(235,235,235,0.70);
+
+  --accentA: #3b86ff;
+  --accentB: #1b6cff;
+
+  --ds-border: #2b2b2b;
+  --ds-surface: #d9d9d9;
+  --ds-inner: #efefef;
+}
+
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+
+body{
+  margin: 0;
+  color: var(--ink);
+  letter-spacing: 0.1px;
+
+  font-family:
+    "LinuxLibertineORegular",
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  /* DS bottom-screen grid */
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-dark) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-dark) 1px, transparent 1px),
+    linear-gradient(var(--grid-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-light) 1px, transparent 1px);
+  background-size: 16px 16px, 16px 16px, 16px 16px, 16px 16px;
+  background-position: 0 0, 0 0, 1px 1px, 1px 1px;
+}
+
+/* soft vignette */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events:none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.10));
+}
+
+/* ==========================
+   PAGE LAYOUT + ZOOM
+   ========================== */
+.page{
+  zoom: 1.4;
+
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 18px;
+  padding: 22px;
+  place-items: center;
+}
+
+/* ==========================
+   MAIN BOX (mockup-style)
+   ========================== */
+.ds-main{
+  width: 520px;
+  min-height: 420px;
+
+  background: var(--ds-surface);
+
+  border: 1px solid #5a5a5a;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,0.9),   /* top highlight */
+    inset 0 -1px rgba(0,0,0,0.18),       /* bottom shadow */
+
+    inset 1px 0 rgba(255,255,255,0.6),   /* left highlight */
+    inset -1px 0 rgba(0,0,0,0.25),       /* right shadow */
+
+    0 2px 4px rgba(0,0,0,0.18);          /* outer depth */
+
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scale UI down inside boxes */
+.ds-main,
+.ds-footerbox{
+  font-size: 0.82rem;
+}
+
+/* ==========================
+   BIGGER HEADER BAR + LOGO
+   ========================== */
+.ds-headerbar{
+  position: relative;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 0 14px;
+
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+
+  /* Metallic Blue Linear Gradient */
+  background: linear-gradient(
+    to bottom,
+    #3b82f6 0%,   /* Bright blue top highlight */
+    #1d4ed8 30%,  /* Rich cobalt blue mid-tone */
+    #0d224a 48%,  /* Dark navy upper split */
+    #050d1a 49%,  /* Deepest navy lower split */
+    #1a365d 100%  /* Deep blue base reflection */
+  );
+
+  box-shadow:
+    inset 0 2px rgba(255,255,255,0.45), /* Inner top highlight */
+    inset 0 -2px rgba(0,0,0,0.5);       /* Inner bottom depth */
+
+  overflow: visible; /* Lets logo extend out of the top */
+}
+
+.ds-header-left{
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  min-width: 0;
+  height: 100%;
+  position: relative;
+}
+
+.ds-logo {
+  height: 96px;
+  width: auto;
+  position: absolute;
+  bottom: 1px;
+  z-index: 2; /* Sits above the shine */
+
+  filter:
+    drop-shadow(0 1px 0 rgba(255,255,255,0.6))
+    drop-shadow(0 2px 2px rgba(0,0,0,0.35));
+}
+
+.ds-header-title{
+  font-family: "LinuxLibertineOBold", "LinuxLibertineORegular", Georgia, serif;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,0.95);
+  text-shadow:
+    0 2px 0 rgba(0,0,0,0.35),
+    0 -1px 0 rgba(255,255,255,0.2);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
+}
+
+.ds-header-right{
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* Shine element container with strict render containment */
+.ds-header-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  contain: paint; /* Prevents off-screen movement from expanding page body */
+}
+
+/* Moving glint pseudo-element */
+.ds-header-shine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.0) 25%,
+    rgba(255,255,255,0.45) 50%,
+    rgba(255,255,255,0.0) 75%,
+    transparent 100%
+  );
+
+  transform: skewX(-18deg);
+  opacity: 0;
+}
+
+/* Triggers animation when active class is applied by JS */
+.ds-header-shine.is-animating::before {
+  animation: dsShineSweep 900ms ease-out forwards;
+}
+
+@keyframes dsShineSweep {
+  0%   { left: -60%; opacity: 0.0; }
+  20%  { opacity: 0.55; }
+  100% { left: 120%; opacity: 0.0; }
+}
+
+/* ==========================
+   CONTENT AREA
+   ========================== */
+.ds-content{
+  flex: 1;
+  padding: 14px;
+  background: var(--ds-surface);
+}
+
+/* ==========================
+   INNER PANEL
+   ========================== */
+.ds-panel{
+  background: var(--ds-inner);
+  border: 1px solid #7a7a7a;
+  border-radius: 0;
+
+  padding: 16px;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,0.95),
+    inset 0 -1px rgba(0,0,0,0.12);
+
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ==========================
+   TEXT
+   ========================== */
+.ds-h1{
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+.ds-h2{
+  font-size: 13px;
+  margin: 14px 0 6px;
+  text-transform: uppercase;
+}
+
+.ds-h1,
+.ds-h2{
+  font-family: "LinuxLibertineOBold", "LinuxLibertineORegular", Georgia, serif;
+}
+
+.ds-p{
+  font-size: 12.5px;
+  margin: 0 0 12px;
+  line-height: 1.45;
+}
+
+.dim{ color: var(--muted); }
+
+.ds-list{
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+/* ==========================
+   BUTTONS (explicitly excluded from text glow)
+   ========================== */
+.ds-actions{
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+.ds-btn{
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+
+  font-size: 12px;
+  padding: 7px 10px;
+
+  border-radius: 9px;
+  border: 1px solid rgba(0,0,0,0.30);
+
+  background: linear-gradient(#f9f9f9, #dedede);
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,0.95),
+    inset 0 -1px rgba(0,0,0,0.10),
+    0 3px 8px rgba(0,0,0,0.14);
+}
+
+.ds-btn.primary{
+  color: white;
+  background: linear-gradient(var(--accentA), var(--accentB));
+  text-shadow: 0 1px rgba(0,0,0,0.25);
+}
+
+/* ==========================
+   TEXT LINKS ONLY (Updated to ignore comment avatars)
+   ========================== */
+a:not(.ds-btn):not(.comment-avatar-link),
+a:not(.ds-btn):not(.comment-avatar-link):link,
+a:not(.ds-btn):not(.comment-avatar-link):visited {
+  background: linear-gradient(
+    to bottom,
+    #2563eb 0%,
+    #1d4ed8 45%,
+    #091329 48%,
+    #112240 100%
+  );
+  
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  color: #1d4ed8;
+  font-weight: bold;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+/* Exclude avatars from text-gradient hover glow */
+a:not(.ds-btn):not(.comment-avatar-link):hover {
+  background: none !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+  color: #e0e0e0 !important;
+  animation: font-pulse-glow 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes font-pulse-glow {
+  0% {
+    text-shadow: 
+      0 0 2px #333333,
+      0 0 4px #333333,
+      0 0 6px rgba(50, 50, 50, 0.8);
+  }
+  100% {
+    text-shadow: 
+      0 0 2px #222222,
+      0 0 8px #333333,
+      0 0 16px rgba(50, 50, 50, 0.9),
+      0 0 24px rgba(50, 50, 50, 0.6);
+  }
+}
+
+/* ==========================
+   FOOTER
+   ========================== */
+.ds-footer{
+  text-align: center;
+  font-size: 11px;
+}
+
+/* ==========================
+   DIVIDER
+   ========================== */
+.ds-hr{
+  border: none;
+  border-top: 1px solid var(--border-soft);
+  margin: 14px 0;
+}
+
+/* ==========================
+   MOBILE
+   ========================== */
+@media (max-width: 600px){
+  .page{ zoom: 1.0; }
+
+  .ds-main,
+  .ds-footerbox{
+    width: 95vw;
+    font-size: 1rem;
+  }
+}
+
+/* ==========================
+   STEAM COMMENTS PANEL & ITEMS
+   ========================== */
+.comments-panel {
+  margin-top: 14px;
+  justify-content: flex-start;
+}
+
+.ds-comments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.ds-comments-header .ds-h2 {
+  margin: 0;
+}
+
+.comments-count {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Inner viewport area */
+.comments-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 180px;
+}
+
+/* Small Steam-style comment item */
+.comment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-soft);
+  padding: 6px;
+  border-radius: 2px;
+  margin-bottom: 2px;
+}
+
+/* Avatar container locks */
+.comment-avatar,
+.comment-avatar a,
+.comment-avatar div,
+.playerAvatar,
+.playerAvatarFrame {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  flex-shrink: 0;
+  overflow: hidden !important;
+  position: relative;
+  display: block;
+}
+
+/* Hide animated Steam avatar frames completely */
+.playerAvatarFrame img,
+.profile_avatar_frame {
+  display: none !important;
+}
+
+/* Small profile picture hard constraints */
+.comment-avatar img,
+.playerAvatar img {
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.comment-content {
+  flex: 1;
+  min-width: 0; /* Stops long text/urls from stretching boxes */
+  font-size: 11px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.comment-author {
+  font-size: 11.5px !important;
+  font-weight: bold;
+}
+
+.comment-date {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.comment-text {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+/* Strict caps on emoticons or inline images inside comments */
+.comment-text img,
+.commentthread_comment_text img {
+  max-width: 16px !important;
+  max-height: 16px !important;
+  width: auto !important;
+  height: auto !important;
+  vertical-align: middle;
+  display: inline-block !important;
+  margin: 0 2px !important;
+}
+
+/* Compact Pagination Row */
+.comment-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.comment-pagination .ds-btn {
+  padding: 3px 8px;
+  font-size: 11px;
+}
+
+.comment-pagination .ds-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ==========================
+   STRICT AVATAR ISOLATION
+   ========================== */
+.comment-avatar-link {
+  display: block !important;
+  width: 32px !important;
+  height: 32px !important;
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+.comment-avatar img {
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================
+   ICONS NEXT TO LINKS
+   ========================== */
+
+.ds-icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  vertical-align: middle;
+}
+
+.ds-link-icon {
+  height: 1em;
+  width: 1em;
+  object-fit: contain;
+  vertical-align: middle;
+  flex-shrink: 0;
+  
+  -webkit-text-fill-color: initial;
+}
