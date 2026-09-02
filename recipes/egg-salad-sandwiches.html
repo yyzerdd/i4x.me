@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Egg Salad Sandwiches - masterdojo learns cooking</title>
+    <link
+      rel="stylesheet"
+      media="screen"
+      href="https://fontlibrary.org/face/linux-libertine"
+      type="text/css"
+    />
+    <!-- Links to recipes/style.css since this file lives inside /recipes/ -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="/US8468SRE.png" sizes="96x96" />
+  </head>
+  <body>
+    <div class="page">
+      <main class="ds-main">
+        <!-- DS Header Bar -->
+        <div class="ds-headerbar">
+          <div class="ds-header-left">
+            <img src="/1JYLPHL0M.png" class="ds-logo" alt="Website logo" />
+          </div>
+          <div class="ds-header-right">v1.0</div>
+          <div class="ds-header-shine" aria-hidden="true"></div>
+        </div>
+
+        <!-- Recipe Content Panel -->
+        <div class="ds-content">
+          <section class="ds-panel">
+            <div class="ds-actions">
+              <a class="ds-btn" href="/recipes.html">◄ Back to Recipes</a>
+            </div>
+
+            <h1 class="ds-h1" style="margin-top: 10px;">Recipe Title Here</h1>
+            <p class="ds-p dim">Prep: 15 mins | Cook: 45 mins | Yield: 4 servings</p>
+
+            <hr class="ds-hr" />
+
+            <!-- Optional Hero Image -->
+            <img
+              src="/recipes/thumbs/hero-placeholder.jpg"
+              alt="Recipe Banner"
+              class="ds-recipe-hero-img"
+            />
+
+            <!-- Recipe Description -->
+            <p class="ds-p">
+              A brief introductory summary of the dish, background, or tips for best results.
+            </p>
+
+            <!-- Ingredients Section -->
+            <h2 class="ds-h2">Ingredients</h2>
+            <ul class="ds-list ds-ingredients-list">
+              <li>1 lb Main Ingredient</li>
+              <li>2 tbsp Olive Oil or Butter</li>
+              <li>1 tsp Salt</li>
+              <li>Fresh herbs for garnish</li>
+            </ul>
+
+            <!-- Instructions Section -->
+            <h2 class="ds-h2">Instructions</h2>
+            <ol class="ds-list ds-steps-list">
+              <li>Prepare and chop all ingredients before heating.</li>
+              <li>Heat oil over medium-high heat in a large pan or heavy pot.</li>
+              <li>Cook primary ingredients for 8–10 minutes until browned.</li>
+              <li>Season to taste and serve immediately while hot.</li>
+            </ol>
+
+            <!-- Optional Notes -->
+            <hr class="ds-hr" />
+            <h2 class="ds-h2">Notes</h2>
+            <p class="ds-p dim">
+              Storage: Keeps in an airtight container in the fridge for up to 3 days.
+            </p>
+
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Header Shine Script -->
+    <script>
+      const header = document.querySelector('.ds-headerbar');
+      const shine = document.querySelector('.ds-header-shine');
+      if (header && shine) {
+        header.addEventListener('mouseenter', () => {
+          shine.classList.remove('is-animating');
+          void shine.offsetWidth;
+          shine.classList.add('is-animating');
+        });
+        shine.addEventListener('animationend', () => {
+          shine.classList.remove('is-animating');
+        });
+      }
+    </script>
+  </body>
+</html>

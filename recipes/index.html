@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>masterdojo learns cooking</title>
+    <link
+      rel="stylesheet"
+      media="screen"
+      href="https://fontlibrary.org/face/linux-libertine"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/recipes/style.css" />
+    <link rel="icon" type="image/png" href="/US8468SRE.png" sizes="96x96" />
+  </head>
+  <body>
+    <div class="page">
+      <main class="ds-main">
+        <div class="ds-headerbar">
+          <div class="ds-header-left">
+            <img src="/1JYLPHL0M.png" class="ds-logo" alt="Website logo" />
+          </div>
+          <div class="ds-header-right">v1.0</div>
+          <div class="ds-header-shine" aria-hidden="true"></div>
+        </div>
+
+        <div class="ds-content">
+          <section class="ds-panel">
+            <h1 class="ds-h1">masterdojo learns cooking</h1>
+
+            <div class="ds-actions">
+              <a class="ds-btn" href="/">◄ Home</a>
+            </div>
+
+            <hr class="ds-hr" />
+
+            <div class="ds-recipe-list">
+
+              <a href="/recipes/egg-salad-sandwiches.html" class="ds-recipe-card">
+                <img
+                  src="/recipes/thumbs/M5QQEXGRU.png"
+                  alt="Egg salad sandwiches"
+                  class="ds-recipe-thumb"
+                />
+                <div class="ds-recipe-details">
+                  <div class="ds-recipe-header">
+                    <span class="ds-recipe-title">Egg salad sandwiches</span>
+                    <span class="ds-recipe-meta">25 minutes</span>
+                  </div>
+                  <p class="ds-recipe-desc">
+                    7-Eleven style egg salad sandwiches.
+                  </p>
+                </div>
+              </a>
+
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Header Shine Script -->
+    <script>
+      const header = document.querySelector('.ds-headerbar');
+      const shine = document.querySelector('.ds-header-shine');
+      if (header && shine) {
+        header.addEventListener('mouseenter', () => {
+          shine.classList.remove('is-animating');
+          void shine.offsetWidth;
+          shine.classList.add('is-animating');
+        });
+        shine.addEventListener('animationend', () => {
+          shine.classList.remove('is-animating');
+        });
+      }
+    </script>
+  </body>
+</html>
